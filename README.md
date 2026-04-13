@@ -17,7 +17,7 @@ The model predicts credit risk (good/bad credit) using the **German Credit Datas
 ## Run Steps
 
 Without Docker
-1. **Install dependencies**
+1. Install dependencies
    ```bash
    pip install -r requirements.txt
 2. Train the model
