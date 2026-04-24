@@ -5,6 +5,9 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 import joblib
+from sklearn.metrics import accuracy_score, f1_score
+import mlflow
+import mlflow.sklearn
 
 # Load dataset
 statlog_german_credit_data = fetch_ucirepo(id=144)
@@ -36,7 +39,36 @@ pipeline = Pipeline([
 ])
 pipeline.fit(X_train, y_train.values.ravel())
 
-# Save model
-joblib.dump(pipeline, 'model.joblib')
+# metrics
+y_test_pred = pipeline.predict(X_test)
+test_accuracy = accuracy_score(y_test, y_test_pred)
+test_f1 = f1_score(y_test, y_test_pred)
 
-print(f"Training accuracy: {pipeline.score(X_train, y_train):.4f}")
+mlflow.set_tracking_uri("http://localhost:5000")
+mlflow.set_experiment("German_Credit_Risk")
+
+with mlflow.start_run(run_name="LR_Baseline"):
+    # Log parameters
+    mlflow.log_param("model_type", "LogisticRegression")
+    mlflow.log_param("max_iter", 1000)
+    mlflow.log_param("C", 1.0)
+    
+    # Log metrics
+    mlflow.log_metric("test_accuracy", test_accuracy)
+    mlflow.log_metric("test_f1", test_f1)
+    
+    # Save and log model
+    joblib.dump(pipeline, "model.joblib")
+    mlflow.log_artifact("model.joblib")
+    
+    # Register model
+    mlflow.sklearn.log_model(
+        sk_model=pipeline,
+        artifact_path="model",
+        registered_model_name="GermanCreditRiskModel"
+    )
+
+# Save model
+# joblib.dump(pipeline, 'model.joblib')
+
+# print(f"Training accuracy: {pipeline.score(X_train, y_train):.4f}")

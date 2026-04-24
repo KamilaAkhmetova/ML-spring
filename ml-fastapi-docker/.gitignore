@@ -1,0 +1,55 @@
+# Virtual Environment
+mlflow_env/
+venv/
+env/
+ENV/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pycache/
+
+# MLflow files
+mlruns/
+mlartifacts/
+mlflow.db
+*.db
+*.db-journal
+
+# Streamlit files
+.streamlit/
+*.pyc
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp files
+*.log
+*.tmp
+.DS_Store
+
+# Docker files (optional - depends if you want to commit them)
+.dockerignore
+
+# Model files (if they are too big)
+*.joblib
+*.pkl
+*.h5
+*.onnx
+
+# Virtual environment from conda
+conda.yaml
+python_env.yaml
+
+# Jupyter notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# OS files
+Thumbs.db
+desktop.ini
